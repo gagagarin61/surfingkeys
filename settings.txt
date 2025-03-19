@@ -11,6 +11,11 @@ api.map('d', 'x');
 api.map('F', 'C');
 api.map('u', 'X');
 
+#surfingkeys_hints span {
+    transform: translateX(-100%); /* ヒントを左側に移動 */
+    margin-left: -5px; /* 位置調整（必要に応じて変更） */
+}
+
 
 // ページのURLのpage=パラメータを変更して次のページ/前のページに遷移
 function changePage(step) {
