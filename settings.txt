@@ -17,14 +17,7 @@ api.map('u', 'X');
 }
 
 
-// ページのURLのpage=パラメータを変更して次のページ/前のページに遷移
-function changePage(step) {
-    let url = new URL(window.location.href);
-    let params = url.searchParams;
-    let page = parseInt(params.get("page")) || 1;
-    params.set("page", page + step);
-    window.location.href = url.toString();
-}
+
 
 // 次のページに移動 (例: `]]`)
 api.mapkey(']]', 'Go to next page', function() {
@@ -116,9 +109,10 @@ var overlayedGlobalMarks = {
   '6': 'https://wiki3.jp/nikke',
   '8': 'https://togetter.com/logout?callback=https://togetter.com/',
   'a': 'https://www.amazon.co.jp/',
-  'A': 'https://www.google.com/analytics/web/?hl=ja',
+  'A': 'http://192.168.1.206:8123/config/automation/dashboard',
   'B': 'https://www.dmm.com/rental/ppr/-/basket/',
   'c': 'https://calil.jp/',
+  'C': 'http://192.168.1.206:8123/api/hassio_ingress/C-EUx8kY9S18zZrLGiH6iviws3wP5rcbHIHW9DpaxX8/'
   'd': 'https://www.diigo.com/sign-in',
   'D': 'https://mission.games.dmm.com/',
   'e': 'https://ecnavi.jp/login/',
@@ -126,6 +120,7 @@ var overlayedGlobalMarks = {
   'f': 'https://fewlight.net/',
   'g': 'https://mail.google.com/',
   'G': 'https://github.com/login',
+  'H': 'http://192.168.1.206:8123/lovelace/0',
   'i': 'https://jp.inoreader.com/login',
   'I': 'https://gist.github.com/auth/github?return_to=https://gist.github.com',
   'j': 'https://translate.google.com/?hl=ja&sl=auto&tl=ja&op=translate',
