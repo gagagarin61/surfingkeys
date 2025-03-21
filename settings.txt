@@ -104,7 +104,7 @@ var overlayedGlobalMarks = {
   'A': 'http://192.168.1.206:8123/config/automation/dashboard',
   'B': 'https://www.dmm.com/rental/ppr/-/basket/',
   'c': 'https://calil.jp/',
-  'C': 'http://192.168.1.206:8123/api/hassio_ingress/C-EUx8kY9S18zZrLGiH6iviws3wP5rcbHIHW9DpaxX8/'
+  'C': 'http://192.168.1.206:8123/api/hassio_ingress/C-EUx8kY9S18zZrLGiH6iviws3wP5rcbHIHW9DpaxX8/',
   'd': 'https://www.diigo.com/sign-in',
   'D': 'https://mission.games.dmm.com/',
   'e': 'https://ecnavi.jp/login/',
