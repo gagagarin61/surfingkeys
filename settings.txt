@@ -109,7 +109,7 @@ var overlayedGlobalMarks = {
   'D': 'https://mission.games.dmm.com/',
   'e': 'https://ecnavi.jp/login/',
   'E': 'https://www.evernote.com/Login.action',
-  'f': 'https://fewlight.net/',
+  'f': 'https://feedly.com/i/my/me',
   'g': 'https://mail.google.com/',
   'G': 'https://github.com/login',
   'H': 'http://192.168.1.206:8123/lovelace/0',
