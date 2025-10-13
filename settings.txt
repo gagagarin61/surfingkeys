@@ -24,7 +24,7 @@ api.mapkey('[[', 'Go to previous page', function() {
 
 
 
-api.addSearchAlias('calil', 'calil', 'https://calil.jp/search?q=')
+api.addSearchAlias('calil', 'calil', 'https://calil.jp/search?keyword=')
 api.mapkey('oc', '#8Open Search with alias c', function () {
   api.Front.openOmnibar({ type: 'SearchEngine', extra: 'calil' })
 })
