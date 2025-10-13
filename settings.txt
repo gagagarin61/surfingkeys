@@ -44,6 +44,13 @@ api.mapkey('om', '#8Open Search with alias m', function () {
 })
 
 
+// misumi
+api.addSearchAlias('misumi', 'misumi', 'https://jp.misumi-ec.com/vona2/result/?Keyword=')
+api.mapkey('ov', '#8Open Search with alias m', function () {
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'misumi' })
+})
+
+
 // an example to replace `T` with `gt`, click `Default mappings` to see how `T` works.
 api.map('gt', 'T');
 
