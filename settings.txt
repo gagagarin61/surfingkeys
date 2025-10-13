@@ -38,7 +38,7 @@ api.mapkey('oa', '#8Open Search with alias a', function () {
 
 
 // mercari
-api.addSearchAlias('mercari', 'mercari', 'https://jp.mercari.com/search?q=')
+api.addSearchAlias('mercari', 'mercari', 'https://jp.mercari.com/search?keyword=%s&q=%s')
 api.mapkey('om', '#8Open Search with alias m', function () {
   api.Front.openOmnibar({ type: 'SearchEngine', extra: 'mercari' })
 })
