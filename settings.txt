@@ -36,6 +36,12 @@ api.mapkey('oa', '#8Open Search with alias a', function () {
   api.Front.openOmnibar({ type: 'SearchEngine', extra: 'alc' })
 })
 
+// calil
+api.addSearchAlias('calil', 'calil', 'https://calil.jp/search?q=')
+api.mapkey('oc', '#8Open Search with alias c', function () {
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'calil' })
+})
+
 
 // mercari
 api.addSearchAlias('mercari', 'mercari', 'https://jp.mercari.com/search?keyword=%s&q=%s')
