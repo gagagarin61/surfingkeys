@@ -203,30 +203,38 @@ api.mapkey('go', 'Jump to vim-like mark in current tab', function(mark) {
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
 
 
-// op を安全に解除してから再登録
+// === op マッピングを上書きして確実に動くバージョン ===
 try { api.unmap('op'); } catch(e) {}
 
-// 特許公報（pnet65）を直接開く（プロンプト入力を変換して URL を新タブで開く）
-api.mapkey('op', 'Open Canon PNET from 特開番号 (direct)', function() {
+// 全角数字を半角に変換するヘルパー
+function zenkakuToHankakuDigits(str) {
+  return str.replace(/[０-９]/g, function(s){
+    return String.fromCharCode(s.charCodeAt(0) - 65248);
+  });
+}
+
+api.mapkey('op', 'Open Canon PNET from 特開番号 (robust)', function() {
   var q = window.prompt('検索文字列を入力してください（例: 特開2022-092708）:');
   if (!q) return;
 
-  // 数字だけ取り出す（全角/半角ハイフンや余計な文字を無視）
-  var digits = q.replace(/[^\d]/g, ''); // 例: "2022092708"
+  // 全角→半角、数字以外を除去
+  var normalized = zenkakuToHankakuDigits(q);
+  var digits = normalized.replace(/[^\d]/g, ''); // 例: "2022092708"
+
   if (digits.length < 6) {
     Front.showPopup('入力が短すぎます。例: 特開2022-092708');
     return;
   }
 
-  var year4 = digits.slice(0, 4);      // "2022"
-  var rest = digits.slice(4);          // "092708"
-  var yy = year4.slice(2);             // "22"
-  var kohoNo = 'AA' + yy + rest;       // "AA22092708"
+  // 下2桁以降を取り出して AA + (yy+rest)
+  // 例: digits = "2022092708" -> digits.slice(2) = "22092708"
+  var kohoCore = digits.slice(2);
+  var kohoNo = 'AA' + kohoCore; // "AA22092708"
 
-  var url = 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo='
-            + kohoNo + '&ONFlag=1&UserID=AAA109286';
+  var base = 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo=';
+  var url = base + encodeURIComponent(kohoNo) + '&ONFlag=1&UserID=AAA109286';
 
-  // 直接新しいタブで開く（openOmnibar を使わない）
+  // 直接新しいタブで開く（openOmnibarを経由しない）
   api.RUNTIME('openLink', {
     url: url,
     tab: { tabbed: true, active: true },
@@ -234,3 +242,4 @@ api.mapkey('op', 'Open Canon PNET from 特開番号 (direct)', function() {
     scrollTop: 0
   });
 });
+
