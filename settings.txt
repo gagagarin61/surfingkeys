@@ -202,37 +202,3 @@ api.mapkey('go', 'Jump to vim-like mark in current tab', function(mark) {
 });
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
 
-
-api.addSearchAliasX(
-  'pat',
-  'patent-search',
-  function (q) {
-    let koho = q.trim();
-
-    // 「特開YYYY-NNNNNN」形式を検出して変換
-    const tokkaipattern = /^特開(\d{4})-(\d{6})$/;
-    const match = koho.match(tokkaipattern);
-
-    if (match) {
-      const year = match[1];
-      const num = match[2];
-      // 「AA」+ 下2桁の年 + 番号 に変換
-      koho = 'AA' + year.slice(2) + num;
-    }
-
-    // URL 生成
-    const url =
-      'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?' +
-      'KohoNo=' + encodeURIComponent(koho) +
-      '&ONFlag=1&UserID=AAA109286';
-
-    return url;
-  },
-  null,  // suggestion_url（不要なら null）
-  'pat'  // callback のエイリアス名
-);
-
-// 「op」でオムニバーを開く
-api.mapkey('op', '#8Open Patent Search', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'pat' });
-});
