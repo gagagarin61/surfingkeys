@@ -203,43 +203,34 @@ api.mapkey('go', 'Jump to vim-like mark in current tab', function(mark) {
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
 
 
-// === op マッピングを上書きして確実に動くバージョン ===
-try { api.unmap('op'); } catch(e) {}
 
-// 全角数字を半角に変換するヘルパー
-function zenkakuToHankakuDigits(str) {
-  return str.replace(/[０-９]/g, function(s){
-    return String.fromCharCode(s.charCodeAt(0) - 65248);
-  });
-}
+api.addSearchAlias(
+  'pat',
+  'patent-search',
+  function (q) {
+    let koho = q.trim();
 
-api.mapkey('op', 'Open Canon PNET from 特開番号 (robust)', function() {
-  var q = window.prompt('検索文字列を入力してください（例: 特開2022-092708）:');
-  if (!q) return;
+    // 「特開YYYY-NNNNNN」形式を検出して変換
+    const tokkaipattern = /^特開(\d{4})-(\d{6})$/;
+    const match = koho.match(tokkaipattern);
 
-  // 全角→半角、数字以外を除去
-  var normalized = zenkakuToHankakuDigits(q);
-  var digits = normalized.replace(/[^\d]/g, ''); // 例: "2022092708"
+    if (match) {
+      const year = match[1];
+      const num = match[2];
+      // 「AA」+ 下2桁の年 + 番号 に変換
+      koho = 'AA' + year.slice(2) + num;
+    }
 
-  if (digits.length < 6) {
-    Front.showPopup('入力が短すぎます。例: 特開2022-092708');
-    return;
+    // 指定URLに検索クエリを組み込み
+    return (
+      'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?' +
+      'KohoNo=' + encodeURIComponent(koho) +
+      '&ONFlag=1&UserID=AAA109286'
+    );
   }
+);
 
-  // 下2桁以降を取り出して AA + (yy+rest)
-  // 例: digits = "2022092708" -> digits.slice(2) = "22092708"
-  var kohoCore = digits.slice(2);
-  var kohoNo = 'AA' + kohoCore; // "AA22092708"
-
-  var base = 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo=';
-  var url = base + encodeURIComponent(kohoNo) + '&ONFlag=1&UserID=AAA109286';
-
-  // 直接新しいタブで開く（openOmnibarを経由しない）
-  api.RUNTIME('openLink', {
-    url: url,
-    tab: { tabbed: true, active: true },
-    scrollLeft: 0,
-    scrollTop: 0
-  });
+// キーマップ: 「op」でこの検索を開く
+api.mapkey('op', '#8Open Patent Search', function () {
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'pat' });
 });
-
