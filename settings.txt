@@ -203,30 +203,42 @@ api.mapkey('go', 'Jump to vim-like mark in current tab', function(mark) {
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
 
 
-// 特許公報（pnet65）検索ショートカット（簡略版）
-// 例: 「特開2022-092708」と入力すると
-//      → http://pnet65.cgn.canon.co.jp/...&KohoNo=AA22092708 を開く
+// 既に op が使われていれば解除（無害）
+try { api.unmap('op'); } catch(e) {}
+
+// pnet 用の検索エイリアス（%s に KohoNo を入れる）
+api.addSearchAlias('pnet', 'pnet', 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo=%s&ONFlag=1&UserID=AAA109286');
+
+// op キーで omnibar を開き、入力を受け取って自動変換して開く
 api.mapkey('op', 'Search Canon PNET by 特開番号', function() {
+  // ユーザー入力（例: 特開2022-092708）
   var q = window.prompt('検索文字列を入力してください（例: 特開2022-092708）:');
   if (!q) return;
 
-  // 「特開」を削除し、ハイフンを除去
-  var s = q.replace('特開', '').replace('-', '');
-
-  // 「2022」→「22」を抽出
-  var yy = s.slice(2, 4);        // "22"
-  var rest = s.slice(4);         // "092708"
-
+  // 簡略仕様：必ず「特開YYYY-NNNNNN」フォーマットが来る前提
+  var s = q.replace('特開', '').replace('-', ''); // => "2022092708"
+  var yy = s.slice(2,4);    // "22"
+  var rest = s.slice(4);    // "092708"
   var kohoNo = 'AA' + yy + rest; // "AA22092708"
 
-  var url = 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo='
-            + kohoNo + '&ONFlag=1&UserID=AAA109286';
+  // surfinkeys の search alias に投げる形（%s に kohoNo が入る）
+  // 直接 URL を開んでも良いですが、SearchEngine の仕組みに合わせています
+  api.Front.openOmnibar({
+    type: 'SearchEngine',
+    extra: 'pnet',
+    // openOmnibar は実装によって 'text' または 'query' を受け取る場合があるため両方渡しておく
+    text: kohoNo,
+    query: kohoNo
+  });
 
-  // 新しいタブで開く
+  // もし openOmnibar の初期テキストサポートが環境で効かない場合は下の方法に切り替えてください（コメント解除して使う）
+  /*
   api.RUNTIME('openLink', {
-    url: url,
+    url: 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo='
+          + kohoNo + '&ONFlag=1&UserID=AAA109286',
     tab: { tabbed: true, active: true },
     scrollLeft: 0,
     scrollTop: 0
   });
+  */
 });
