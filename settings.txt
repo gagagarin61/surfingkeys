@@ -203,8 +203,7 @@ api.mapkey('go', 'Jump to vim-like mark in current tab', function(mark) {
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
 
 
-
-api.addSearchAlias(
+api.addSearchAliasX(
   'pat',
   'patent-search',
   function (q) {
