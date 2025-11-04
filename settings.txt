@@ -24,6 +24,7 @@ api.mapkey('[[', 'Go to previous page', function() {
 
 
 
+
 api.addSearchAlias('calil', 'calil', 'https://calil.jp/search?keyword=')
 api.mapkey('oc', '#8Open Search with alias c', function () {
   api.Front.openOmnibar({ type: 'SearchEngine', extra: 'calil' })
@@ -200,3 +201,32 @@ api.mapkey('go', 'Jump to vim-like mark in current tab', function(mark) {
   }
 });
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
+
+
+// 特許公報（pnet65）検索ショートカット（簡略版）
+// 例: 「特開2022-092708」と入力すると
+//      → http://pnet65.cgn.canon.co.jp/...&KohoNo=AA22092708 を開く
+api.mapkey('op', 'Search Canon PNET by 特開番号', function() {
+  var q = window.prompt('検索文字列を入力してください（例: 特開2022-092708）:');
+  if (!q) return;
+
+  // 「特開」を削除し、ハイフンを除去
+  var s = q.replace('特開', '').replace('-', '');
+
+  // 「2022」→「22」を抽出
+  var yy = s.slice(2, 4);        // "22"
+  var rest = s.slice(4);         // "092708"
+
+  var kohoNo = 'AA' + yy + rest; // "AA22092708"
+
+  var url = 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo='
+            + kohoNo + '&ONFlag=1&UserID=AAA109286';
+
+  // 新しいタブで開く
+  api.RUNTIME('openLink', {
+    url: url,
+    tab: { tabbed: true, active: true },
+    scrollLeft: 0,
+    scrollTop: 0
+  });
+});
