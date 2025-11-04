@@ -203,42 +203,34 @@ api.mapkey('go', 'Jump to vim-like mark in current tab', function(mark) {
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
 
 
-// 既に op が使われていれば解除（無害）
+// op を安全に解除してから再登録
 try { api.unmap('op'); } catch(e) {}
 
-// pnet 用の検索エイリアス（%s に KohoNo を入れる）
-api.addSearchAlias('pnet', 'pnet', 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo=%s&ONFlag=1&UserID=AAA109286');
-
-// op キーで omnibar を開き、入力を受け取って自動変換して開く
-api.mapkey('op', 'Search Canon PNET by 特開番号', function() {
-  // ユーザー入力（例: 特開2022-092708）
+// 特許公報（pnet65）を直接開く（プロンプト入力を変換して URL を新タブで開く）
+api.mapkey('op', 'Open Canon PNET from 特開番号 (direct)', function() {
   var q = window.prompt('検索文字列を入力してください（例: 特開2022-092708）:');
   if (!q) return;
 
-  // 簡略仕様：必ず「特開YYYY-NNNNNN」フォーマットが来る前提
-  var s = q.replace('特開', '').replace('-', ''); // => "2022092708"
-  var yy = s.slice(2,4);    // "22"
-  var rest = s.slice(4);    // "092708"
-  var kohoNo = 'AA' + yy + rest; // "AA22092708"
+  // 数字だけ取り出す（全角/半角ハイフンや余計な文字を無視）
+  var digits = q.replace(/[^\d]/g, ''); // 例: "2022092708"
+  if (digits.length < 6) {
+    Front.showPopup('入力が短すぎます。例: 特開2022-092708');
+    return;
+  }
 
-  // surfinkeys の search alias に投げる形（%s に kohoNo が入る）
-  // 直接 URL を開んでも良いですが、SearchEngine の仕組みに合わせています
-  api.Front.openOmnibar({
-    type: 'SearchEngine',
-    extra: 'pnet',
-    // openOmnibar は実装によって 'text' または 'query' を受け取る場合があるため両方渡しておく
-    text: kohoNo,
-    query: kohoNo
-  });
+  var year4 = digits.slice(0, 4);      // "2022"
+  var rest = digits.slice(4);          // "092708"
+  var yy = year4.slice(2);             // "22"
+  var kohoNo = 'AA' + yy + rest;       // "AA22092708"
 
-  // もし openOmnibar の初期テキストサポートが環境で効かない場合は下の方法に切り替えてください（コメント解除して使う）
-  /*
+  var url = 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo='
+            + kohoNo + '&ONFlag=1&UserID=AAA109286';
+
+  // 直接新しいタブで開く（openOmnibar を使わない）
   api.RUNTIME('openLink', {
-    url: 'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?KohoNo='
-          + kohoNo + '&ONFlag=1&UserID=AAA109286',
+    url: url,
     tab: { tabbed: true, active: true },
     scrollLeft: 0,
     scrollTop: 0
   });
-  */
 });
