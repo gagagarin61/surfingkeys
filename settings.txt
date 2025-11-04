@@ -220,16 +220,19 @@ api.addSearchAliasX(
       koho = 'AA' + year.slice(2) + num;
     }
 
-    // 指定URLに検索クエリを組み込み
-    return (
+    // URL 生成
+    const url =
       'http://pnet65.cgn.canon.co.jp/SR-C/Main/View/OutLineFrameOFF.aspx?' +
       'KohoNo=' + encodeURIComponent(koho) +
-      '&ONFlag=1&UserID=AAA109286'
-    );
-  }
+      '&ONFlag=1&UserID=AAA109286';
+
+    return url;
+  },
+  null,  // suggestion_url（不要なら null）
+  'pat'  // callback のエイリアス名
 );
 
-// キーマップ: 「op」でこの検索を開く
+// 「op」でオムニバーを開く
 api.mapkey('op', '#8Open Patent Search', function () {
-  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'pat' });
+  Front.openOmnibar({ type: 'SearchEngine', extra: 'pat' });
 });
