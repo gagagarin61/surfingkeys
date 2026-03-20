@@ -127,7 +127,7 @@ var overlayedGlobalMarks = {
   'g': 'https://mail.google.com/',
   'G': 'https://github.com/login',
   'H': 'http://192.168.1.206:8123/lovelace/0',
-  'i': 'https://jp.inoreader.com/login',
+  'i': 'https://irbank.net',
   'I': 'https://gist.github.com/auth/github?return_to=https://gist.github.com',
   'j': 'https://translate.google.com/?hl=ja&sl=auto&tl=ja&op=translate',
   'k': 'https://kanji.sljfaq.org/drawj.html',
@@ -147,7 +147,7 @@ var overlayedGlobalMarks = {
   't': 'https://twitter.com/i/flow/login',
   'T': 'https://togetter.com/loginTwilog?mode=login',
   'y': 'https://www.youtube.com/',
-  'v': 'https://www.virustotal.com/gui/home/url',
+  'v': 'https://jp.misumi-ec.com/',
   'w': 'https://fewlight.net/wish-list/',
 };
 
