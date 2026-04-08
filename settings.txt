@@ -130,7 +130,7 @@ var overlayedGlobalMarks = {
   'i': 'https://irbank.net',
   'I': 'https://gist.github.com/auth/github?return_to=https://gist.github.com',
   'j': 'https://translate.google.com/?hl=ja&sl=auto&tl=ja&op=translate',
-  'k': 'https://kanji.sljfaq.org/drawj.html',
+  'k': 'http://cipweb70.cgn.canon.co.jp/cip/app/wjph/tempinfo1J.html',
   'l': 'http://localhost:4000/',
   'L': 'http://www.dmm.com/rental/-/wishlist/',
   'm': 'https://jp.mercari.com/',
